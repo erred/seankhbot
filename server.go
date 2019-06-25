@@ -47,13 +47,6 @@ func (s *Server) Fulfill(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// fulfill actually fulfills a WebhookRequest
-func (s *Server) fulfill(r *dfpb.WebhookRequest) (*dfpb.WebhookResponse, error) {
-	res := &dfpb.WebhookResponse{}
-	// TODO not implemented
-	return res, nil
-}
-
 // Health is the http.HandlerFunc for health checks
 func (s *Server) Health(w http.ResponseWriter, r *http.Request) {
 	if !s.alive {
