@@ -44,7 +44,8 @@ func (s *Server) Fulfill(w http.ResponseWriter, r *http.Request) {
 
 	log.Debugln("ServeHTTP start write")
 	// err = json.NewEncoder(w).Encode(res)
-	err = &jsonpb.Marshaler{}.Marhsal(w, res)
+	m := &jsonpb.Marshaler{}
+	err = m.Marshal(w, res)
 	if err != nil {
 		log.Errorln("ServeHTTP write")
 	}
