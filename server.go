@@ -23,16 +23,15 @@ func NewServer() *Server {
 
 // Fulfill is the http.HandlerFunc for fulfilling a WebhookRequest,
 func (s *Server) Fulfill(w http.ResponseWriter, r *http.Request) {
+	var err error
 	log.Debugln("ServeHTTP start parse")
 	req := &dfpb.WebhookRequest{}
-	if log.GetLevel() == log.DebugLevel {
-		b, err := httputil.DumpRequest(r, true)
-		if err != nil {
-			log.Debugln("dump:", string(b))
-		}
+	b, err := httputil.DumpRequest(r, true)
+	if err != nil {
+		log.Debugln("dump:", string(b))
 	}
 	defer r.Body.Close()
-	err := json.NewDecoder(r.Body).Decode(req)
+	err = json.NewDecoder(r.Body).Decode(req)
 	if err != nil {
 		log.Errorln("ServeHTTP parse", err)
 		w.WriteHeader(http.StatusInternalServerError)
