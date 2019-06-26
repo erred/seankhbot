@@ -25,7 +25,7 @@ func (s *Server) Fulfill(w http.ResponseWriter, r *http.Request) {
 	log.Debugln("ServeHTTP start parse")
 	req := &dfpb.WebhookRequest{}
 	defer r.Body.Close()
-	err := json.NewDecoder(r.Body).Decode(r)
+	err := json.NewDecoder(r.Body).Decode(req)
 	if err != nil {
 		log.Errorln("ServeHTTP parse", err)
 		w.WriteHeader(http.StatusInternalServerError)
