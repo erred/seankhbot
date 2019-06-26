@@ -27,9 +27,7 @@ func (s *Server) Fulfill(w http.ResponseWriter, r *http.Request) {
 	log.Debugln("ServeHTTP start parse")
 	req := &dfpb.WebhookRequest{}
 	b, err := httputil.DumpRequest(r, true)
-	if err != nil {
-		log.Debugln("dump:", string(b))
-	}
+	log.Debugln("dump:", string(b))
 	defer r.Body.Close()
 	err = json.NewDecoder(r.Body).Decode(req)
 	if err != nil {
