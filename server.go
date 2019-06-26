@@ -1,10 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"net/http"
-	"net/http/httputil"
 
+	"github.com/golang/protobuf/jsonpb"
 	log "github.com/sirupsen/logrus"
 	dfpb "google.golang.org/genproto/googleapis/cloud/dialogflow/v2"
 )
@@ -26,10 +25,9 @@ func (s *Server) Fulfill(w http.ResponseWriter, r *http.Request) {
 	var err error
 	log.Debugln("ServeHTTP start parse")
 	req := &dfpb.WebhookRequest{}
-	b, err := httputil.DumpRequest(r, true)
-	log.Debugln("dump:", string(b))
 	defer r.Body.Close()
-	err = json.NewDecoder(r.Body).Decode(req)
+	err = jsonpb.Unmarshal(r.Body, req)
+	// err = json.NewDecoder(r.Body).Decode(req)
 	if err != nil {
 		log.Errorln("ServeHTTP parse", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -45,7 +43,8 @@ func (s *Server) Fulfill(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Debugln("ServeHTTP start write")
-	err = json.NewEncoder(w).Encode(res)
+	// err = json.NewEncoder(w).Encode(res)
+	err = &jsonpb.Marshaler{}.Marhsal(w, res)
 	if err != nil {
 		log.Errorln("ServeHTTP write")
 	}
