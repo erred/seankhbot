@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	log "github.com/sirupsen/logrus"
@@ -15,20 +16,20 @@ var (
 )
 
 func init() {
-	switch os.Getenv("LOG_LEVEL") {
-	case "DEBUG":
+	switch strings.ToLower(os.Getenv("LOG_LEVEL")) {
+	case "debug":
 		log.SetLevel(log.DebugLevel)
-	case "INFO":
+	case "info":
 		log.SetLevel(log.InfoLevel)
-	case "ERROR":
+	case "error":
 		fallthrough
 	default:
 		log.SetLevel(log.ErrorLevel)
 	}
 	log.Debugln("Log level set to", log.GetLevel())
 
-	switch os.Getenv("LOG_FORMAT") {
-	case "JSON":
+	switch strings.ToLower(os.Getenv("LOG_FORMAT")) {
+	case "json":
 		log.SetFormatter(&log.JSONFormatter{})
 		log.Debugln("Log format set to json")
 	default:
