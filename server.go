@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"net/http/httputil"
 
 	log "github.com/sirupsen/logrus"
 	dfpb "google.golang.org/genproto/googleapis/cloud/dialogflow/v2"
@@ -24,6 +25,12 @@ func NewServer() *Server {
 func (s *Server) Fulfill(w http.ResponseWriter, r *http.Request) {
 	log.Debugln("ServeHTTP start parse")
 	req := &dfpb.WebhookRequest{}
+	if log.GetLevel() == log.DebugLevel {
+		b, err := httputil.DumpRequest(r, true)
+		if err != nil {
+			log.Debugln("dump:", string(b))
+		}
+	}
 	defer r.Body.Close()
 	err := json.NewDecoder(r.Body).Decode(req)
 	if err != nil {
