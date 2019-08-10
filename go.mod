@@ -1,4 +1,4 @@
-module github.com/seankhliao/seankhbot
+module seankhliao.com/seankhbot
 
 go 1.12
 
